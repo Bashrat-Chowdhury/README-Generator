@@ -50,7 +50,7 @@ inquirer
       type: "list",
       message: "Chose a license for your project.",
       name: "license",
-      choices: ["MIT", "GNU", "None"],
+      choices: ["MIT", "GNU", "ISC", "None"],
     },
     {
       type: "input",
@@ -69,8 +69,12 @@ inquirer
 
 // Function to generate README content based on user input
 function generateREADME(data) {
+  const badge = generateLicenseBadge(data.license);
+
   const readmeContent = `
 # ${data.title}
+
+${badge}
 
 ## Description
 ${data.description}
@@ -112,4 +116,14 @@ If you have additional questions, you can reach me at ${data.email}.
       console.log("README.md successfully generated!");
     }
   });
+}
+
+// function to generate license badge based on user's choice
+function generateLicenseBadge(license) {
+  if (license === "None") {
+    return "";
+  }
+  return `![License](https://img.shields.io/badge/license-${encodeURIComponent(
+    license
+  )}-blue.svg)`;
 }
