@@ -9,70 +9,107 @@ inquirer
   .prompt([
     {
       type: "input",
-      name: "Title",
+      name: "title",
       message: "What is the title of your project?",
     },
     {
       type: "input",
-      name: "Description",
+      name: "description",
       message:
         "Provide a short description explaining the what, why, and how of your project.",
-      name: "description",
     },
     {
       type: "input",
-      name: "Table of Contents",
+      name: "tableofcontents",
       message:
         "If your README is long, add a table of contents to make it easy for users to find what they need.",
     },
     {
       type: "input",
-      name: "Installation",
+      name: "installation",
       message:
         "What are the steps required to install your project? Provide a step-by-step description of how to get the development environment running.",
     },
 
     {
       type: "input",
-      name: "Usage",
+      name: "usage",
       message: "Provide instructions and examples for use.",
+    },
+    {
+      type: "input",
+      name: "contribution",
+      message: "Provide guidlines for contribution.",
+    },
+    {
+      type: "input",
+      name: "tests",
+      message: "Provide test instructions for your project.",
     },
     {
       type: "list",
       message: "Chose a license for your project.",
-      name: "License",
+      name: "license",
       choices: ["MIT", "GNU", "None"],
     },
     {
       type: "input",
-      name: "Usage",
-      message: "Provide instructions and examples for use.",
-    },
-    {
-      type: "input",
-      name: "Questions",
+      name: "github",
       message: "Enter your GitHub username to link your Github profile.",
     },
     {
       type: "input",
-      name: "Questions",
+      name: "email",
       message:
         "Enter your email address to users can contact you with additional questions.",
     },
   ])
-  .then((data) => {
-    const filename = `README.md`;
+  .then((data) => generateREADME(data))
+  .catch((error) => console.error(error));
 
-    fs.writeFile(filename, JSON.stringify(data, null, "\t"), (err) =>
-      err ? console.log(err) : console.log("README file created!")
-    );
+// Function to generate README content based on user input
+function generateREADME(data) {
+  const readmeContent = `
+# ${data.title}
+
+## Description
+${data.description}
+
+## Table of Contents
+- [Installation](#installation)
+- [Usage](#usage)
+- [License](#license)
+- [Contributing](#contributing)
+- [Tests](#tests)
+- [Questions](#questions)
+
+## Installation
+${data.installation}
+
+## Usage
+${data.usage}
+
+## License
+This application is covered under the ${data.license} license.
+
+## Contributing
+${data.contribution}
+
+## Tests
+${data.tests}
+
+## Questions
+For more information, you can visit my GitHub profile: [${data.github}](https://github.com/${data.github})
+
+If you have additional questions, you can reach me at ${data.email}.
+`;
+
+  //Fuction to generate README file
+  fs.writeFile("README.md", readmeContent, (error) => {
+    if (error) {
+      console.error("Error generating README:", error);
+    } else {
+      console.log("README.md successfully generated!");
+    }
   });
-
-// TODO: Create a function to write README file
-function writeToFile(fileName, data) {}
-
-// TODO: Create a function to initialize app
-function init() {}
-
-// Function call to initialize app
-init();
+}
