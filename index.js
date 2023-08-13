@@ -1,10 +1,8 @@
-// TODO: Include packages needed for this application
+//Code to Include packages needed for this application
 const inquirer = require("inquirer");
 const fs = require("fs");
 
-// TODO: Create an array of questions for user input
-// const questions = [];
-
+//Questions to be prompted to the user
 inquirer
   .prompt([
     {
@@ -64,6 +62,7 @@ inquirer
         "Enter your email address to users can contact you with additional questions.",
     },
   ])
+  //Using the user input data to generate the README file
   .then((data) => generateREADME(data))
   .catch((error) => console.error(error));
 
@@ -71,6 +70,7 @@ inquirer
 function generateREADME(data) {
   const badge = generateLicenseBadge(data.license);
 
+  //Format of the README file
   const readmeContent = `
 # ${data.title}
 
